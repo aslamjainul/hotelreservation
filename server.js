@@ -93,6 +93,9 @@ app.get('/register', function (req, res) {
     res.render('register');
 });
 app.post('/register', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
 	console.log('Registering User....'+req.params.fullname);
 	console.log('Registering User....'+req.body.fullname);
 	var col = db.collection('customers');
