@@ -78,9 +78,6 @@ var initDb = function(callback) {
   });
 };
 
-
-app.use('/api/users', require('./controllers/api/users'));
-
 app.get('/userlogin', function (req, res) {
 	res.render('user/login.html', {});
 });
