@@ -86,43 +86,71 @@ app.get('/useroldlogin', function (req, res) {
 	res.render('user/oldlogin.html', {});
 });
 
-app.get('/register', function (req, res) {
-    res.render('register',{ error : null,success:null});
+
+app.get('/customer/login', function (req, res) {
+    res.render('customer/login',{ error : null,success:null});
 });
-app.post('/register', function (req, res) {
+
+app.post('/customer/login', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
 	}
 	
-    if (db) {
-/*        var col = db.collection('counts');
-        // Create a document with request IP and current time of request
-        col.insert({ip: req.ip, date: Date.now()});
-        col.count(function(err, count){
-          res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
-        });*/
-        
+    if (db) {     
+        console.log('Logging in with user....'+req.body.username);
+        var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+        console.log(hashedPassword);	
+        db.collection('customers').findOne(
+                { username: req.body.username ,password: hashedPassword },
+                function (err, user) {
+                    if (err){
+                        res.render('customer/login', { error : 1,success:null});
+                    }
+                    if (user) {
+                    	//Should be redirected to homepage..
+                        res.render('customer/login', { error : null,success:1});
+                    } else {
+                    	res.render('customer/login', { error : 1,success:null});
+                    }
+                });
+      } else {
+        res.render('customer/login', { error : 1,success:null});
+     }
+});
+
+app.get('/customer/registration', function (req, res) {
+    res.render('customer/registration',{ error : null,success:null});
+});
+
+
+
+app.post('/customer/registration', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
         console.log('Going to Registering User with username....'+req.body.username);
 
         db.collection('customers').findOne(
                 { username: req.body.username },
                 function (err, user) {
                     if (err){
-                        res.render('register', { error : 1,success:null});
+                        res.render('customer/registration', { error : 1,success:null});
                     }
                     if (user) {
                         console.log('Username ' + req.body.username + ' is already taken');
-                        res.render('register', { error : 1,success:null});
+                        res.render('customer/registration', { error : 1,success:null});
                     } else {
                         var col = db.collection('customers');
                     	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
                     	console.log(hashedPassword);	
                         col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
-                        res.render('register', { error : null,success:1});
+                        res.render('customer/registration', { error : null,success:1});
                     }
                 });
       } else {
-        res.render('register', { error : 1,success:null});
+        res.render('customer/registration', { error : 1,success:null});
      }
 });
 
