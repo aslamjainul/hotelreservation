@@ -103,7 +103,7 @@ app.post('/customer/bookseat', function (req, res) {
     	var hotel = req.body.hotel;
     	var user = req.body.user;
     	
-    	var seats = req.body['seats[]'].split(",");
+    	var seats = req.body['seats[]'];
     	console.log('seats....'+seats);
         console.log('user....'+user);
         for (var key in seats) {
