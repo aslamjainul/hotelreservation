@@ -9,13 +9,14 @@
                     </div>
                     <div class="panel-body">
                     <% if(success) { %>
-        <div class="alert alert-success"> Registered successfully...</div>
+        <div class="alert alert-success"> Logging in...</div>
     <% } %>
     
            <% if(error) { %>
-        <div class="alert alert-danger">Username already taken!</div>
+        <div class="alert alert-danger">Incorrect username/password.</div>
     <% } %>
     
+    <% if(!success) { %>
                         <form role="form" method="post">
                             <fieldset>
                              <div class="form-group">
@@ -45,9 +46,14 @@
                                 
                             </fieldset>
                         </form>
+                        <% } %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 <%- include('../common/footer') %> 
+
+<% if(success) { %>
+        <meta http-equiv="refresh" content="3; url=/customer/dashboard">
+    <% } %>
