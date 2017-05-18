@@ -87,7 +87,7 @@ app.get('/useroldlogin', function (req, res) {
 });
 
 app.get('/register', function (req, res) {
-    res.render('register');
+    res.render('register',{ error : -1,success:-1});
 });
 app.post('/register', function (req, res) {
 	if (!db) {
@@ -108,21 +108,21 @@ app.post('/register', function (req, res) {
                 { username: req.body.username },
                 function (err, user) {
                     if (err){
-                        res.render('register', { error : true});
+                        res.render('register', { error : 1,success:-1});
                     }
                     if (user) {
                         console.log('Username ' + req.body.username + ' is already taken');
-                        res.render('register', { error : true});
+                        res.render('register', { error : 1,success:-1});
                     } else {
                         var col = db.collection('customers');
                     	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
                     	console.log(hashedPassword);	
                         col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
-                        res.render('register', { success : true});
+                        res.render('register', { error : -1,success:1});
                     }
                 });
       } else {
-        res.render('register', { error : true});
+        res.render('register', { error : 1,success:-1});
      }
 });
 
