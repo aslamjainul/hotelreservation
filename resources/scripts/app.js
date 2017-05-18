@@ -76,7 +76,7 @@ angular.module('seatReservationApp')
         $scope.showSelected = function() {
             if($scope.selectedTables.length > 0) {
                 alert("Selected Seats: \n" + $scope.selectedTables);
-		$.post("customer/bookseat",
+		$.post("/customer/bookseat",
 	        {
 		        seats: $scope.selectedTables,
 		        hotel: $scope.selectedHotel,

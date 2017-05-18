@@ -94,6 +94,29 @@ app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
 });
 
+app.post('/customer/bookseat', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+    	var hotel = req.body.hotel;
+    	var seats = req.body.seats;
+    	var user = req.body.user;
+    	
+        console.log('seats....'+seats);
+        console.log('user....'+user);
+
+        for (var key in seats) {
+            var col = db.collection('bookedseats');
+        	col.insert({seat: seats[key], hotel: hotel,user: user});
+            console.log("key: %o, value: %o", key, seats[key])
+        }
+      } else {
+        res.render('customer/login', { error : 1,success:null});
+     }
+});
+
 app.post('/customer/login', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
