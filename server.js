@@ -15,6 +15,8 @@ app.use(morgan('combined'))
 app.use(cookieParser());
 app.use(session({secret: "CodaLoginSecret"}));
 
+app.set('view engine', 'ejs');
+
 app.use("/resources",express.static(__dirname + "/resources"));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
@@ -64,6 +66,10 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
+
+
+app.use('/register', require('./controllers/register'));
+
 
 app.get('/userlogin', function (req, res) {
 	res.render('user/login.html', {});
