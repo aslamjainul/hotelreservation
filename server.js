@@ -65,7 +65,7 @@ var initDb = function(callback) {
 };
 
 app.get('/userlogin', function (req, res) {
-	res.render('/user/login.html', {});
+	res.render('user/login.html', {});
 });
 
 app.get('/pagecount', function (req, res) {
