@@ -68,6 +68,18 @@ app.get('/userlogin', function (req, res) {
 	res.render('/user/login.html', {});
 });
 
+app.get('/pagecount', function (req, res) {
+	  if (!db) {
+	    initDb(function(err){});
+	  }
+	  if (db) {
+	    db.collection('counts').count(function(err, count ){
+	      res.send('{ pageCount: ' + count + '}');
+	    });
+	  } else {
+	    res.send('{ pageCount: -1 }');
+	  }
+	});
 
 app.get('/', function (req, res) {
 	  if (!db) {
