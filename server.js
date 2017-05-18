@@ -18,6 +18,7 @@ app.use(session({secret: "CodaLoginSecret"}));
 app.set('view engine', 'ejs');
 
 app.use("/resources",express.static(__dirname + "/resources"));
+app.use("/bootstrapresources",express.static(__dirname + "/bootstrapresources"));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -70,9 +71,12 @@ var initDb = function(callback) {
 
 app.use('/register', require('./controllers/register'));
 
-
 app.get('/userlogin', function (req, res) {
 	res.render('user/login.html', {});
+});
+
+app.get('/useroldlogin', function (req, res) {
+	res.render('user/oldlogin.html', {});
 });
 
 app.get('/pagecount', function (req, res) {

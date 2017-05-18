@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="/resources/css/coda.css">
+<body>
+
+<script>
+var app = angular.module("myShoppingList", []); 
+app.controller("myCtrl", function($scope) {
+    $scope.listOfHotels = ["Milk", "Bread", "Cheese"];
+    $scope.addItem = function () {
+        $scope.errortext = "";
+        if (!$scope.addMe) {return;}
+        if ($scope.listOfHotels.indexOf($scope.addMe) == -1) {
+            $scope.listOfHotels.push($scope.addMe);
+        } else {
+            $scope.errortext = "The item is already in your shopping list.";
+        }
+    }
+    $scope.removeItem = function (x) {
+        $scope.errortext = "";    
+        $scope.listOfHotels.splice(x, 1);
+    }
+});
+</script>
+
+<div ng-app="myShoppingList" ng-cloak ng-controller="myCtrl" class="coda-card-2 coda-margin" style="max-width:400px;">
+  <header class="coda-container coda-light-grey coda-padding-16">
+    <h3>My Shopping List</h3>
+  </header>
+  <ul class="coda-ul">
+    <li ng-repeat="x in listOfHotels" class="coda-padding-16">{{x}}<span ng-click="removeItem($index)" style="cursor:pointer;" class="coda-right coda-margin-right">X</span></li>
+  </ul>
+  <div class="coda-container coda-light-grey coda-padding-16">
+    <div class="coda-row coda-margin-top">
+      <div class="coda-col s10">
+        <input placeholder="Add shopping items here" ng-model="addMe" class="coda-input coda-border coda-padding">
+      </div>
+      <div class="coda-col s2">
+        <button ng-click="addItem()" class="coda-btn coda-padding coda-green">Add</button>
+      </div>
+    </div>
+    <p class="coda-text-red">{{errortext}}</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,48 +1,82 @@
 <!DOCTYPE html>
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<link rel="stylesheet" href="/resources/css/coda.css">
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="bootstrapresources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="bootstrapresources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="bootstrapresources/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="bootstrapresources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
 <body>
 
-<script>
-var app = angular.module("myShoppingList", []); 
-app.controller("myCtrl", function($scope) {
-    $scope.listOfHotels = ["Milk", "Bread", "Cheese"];
-    $scope.addItem = function () {
-        $scope.errortext = "";
-        if (!$scope.addMe) {return;}
-        if ($scope.listOfHotels.indexOf($scope.addMe) == -1) {
-            $scope.listOfHotels.push($scope.addMe);
-        } else {
-            $scope.errortext = "The item is already in your shopping list.";
-        }
-    }
-    $scope.removeItem = function (x) {
-        $scope.errortext = "";    
-        $scope.listOfHotels.splice(x, 1);
-    }
-});
-</script>
-
-<div ng-app="myShoppingList" ng-cloak ng-controller="myCtrl" class="coda-card-2 coda-margin" style="max-width:400px;">
-  <header class="coda-container coda-light-grey coda-padding-16">
-    <h3>My Shopping List</h3>
-  </header>
-  <ul class="coda-ul">
-    <li ng-repeat="x in listOfHotels" class="coda-padding-16">{{x}}<span ng-click="removeItem($index)" style="cursor:pointer;" class="coda-right coda-margin-right">X</span></li>
-  </ul>
-  <div class="coda-container coda-light-grey coda-padding-16">
-    <div class="coda-row coda-margin-top">
-      <div class="coda-col s10">
-        <input placeholder="Add shopping items here" ng-model="addMe" class="coda-input coda-border coda-padding">
-      </div>
-      <div class="coda-col s2">
-        <button ng-click="addItem()" class="coda-btn coda-padding coda-green">Add</button>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <p class="coda-text-red">{{errortext}}</p>
-  </div>
-</div>
+
+    <!-- jQuery -->
+    <script src="bootstrapresources/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bootstrapresources/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="bootstrapresources/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="bootstrapresources/dist/js/sb-admin-2.js"></script>
 
 </body>
+
 </html>
