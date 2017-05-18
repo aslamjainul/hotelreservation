@@ -86,6 +86,9 @@ app.get('/useroldlogin', function (req, res) {
 	res.render('user/oldlogin.html', {});
 });
 
+app.get('/customer/dashboard', function (req, res) {
+    res.render('customer/dashboard',{ error : null,success:null});
+});
 
 app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
