@@ -101,28 +101,19 @@ app.post('/customer/bookseat', function (req, res) {
 	
     if (db) {     
     	var hotel = req.body.hotel;
-    	var seats = req.body.seats;
     	var user = req.body.user;
     	
-    	console.log("first"+req.body['seats[]']);
-    	console.log("first2"+req.body['seats']);
-    	console.log("first2"+req.body.seats);
-    	console.log("first2"+req.body.length);
-    	console.log("first2"+req.body.seats[0]);
-
-    	item = req.body['seats'];
-    	console.log(item);
-    		
-        console.log('seats....'+seats);
+    	var seats = req.body['seats[]'].split(",");
+    	console.log('seats....'+seats);
         console.log('user....'+user);
-
         for (var key in seats) {
             var col = db.collection('bookedseats');
         	col.insert({seat: seats[key], hotel: hotel,user: user});
             console.log("key: %o, value: %o", key, seats[key])
         }
+        res.send('{ updated : true }');
       } else {
-        res.render('customer/login', { error : 1,success:null});
+          res.send('{ updated : false }');
      }
 });
 
