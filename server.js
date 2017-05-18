@@ -104,6 +104,12 @@ app.post('/customer/bookseat', function (req, res) {
     	var seats = req.body.seats;
     	var user = req.body.user;
     	
+    	console.log("first"+req.body['seats[]']);
+    	console.log("first2"+req.body['seats']);
+    	console.log("first2"+req.body.seats);
+    	console.log("first2"+req.body.length);
+    	console.log("first2"+req.body.seats[0]);
+
     	item = req.body['seats'];
     	console.log(item);
     		
