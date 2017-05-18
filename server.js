@@ -9,6 +9,9 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 
+var crypto = require('crypto');
+
+
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
@@ -76,7 +79,6 @@ var initDb = function(callback) {
 };
 
 
-app.use('/register', require('./controllers/register'));
 app.use('/api/users', require('./controllers/api/users'));
 
 app.get('/userlogin', function (req, res) {
@@ -87,6 +89,16 @@ app.get('/useroldlogin', function (req, res) {
 	res.render('user/oldlogin.html', {});
 });
 
+app.get('/register', function (req, res) {
+    res.render('register');
+});
+app.post('/register', function (req, res) {
+	console.log('Registering User....'+req.body.fullname);
+	var col = db.collection('customers');
+	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+	console.log(hashedPassword);	
+    col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
+});
 
 app.get('/pagecount', function (req, res) {
 	  if (!db) {
