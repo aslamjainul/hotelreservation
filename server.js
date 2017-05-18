@@ -93,6 +93,7 @@ app.get('/register', function (req, res) {
     res.render('register');
 });
 app.post('/register', function (req, res) {
+	console.log('Registering User....'+req.params.fullname);
 	console.log('Registering User....'+req.body.fullname);
 	var col = db.collection('customers');
 	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
