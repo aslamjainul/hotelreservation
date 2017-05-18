@@ -94,6 +94,46 @@ app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
 });
 
+app.get('/customer/getreservedseats/:hotel', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    db.collection('bookedseats', function(err, collection) {
+        if (!err) {
+        	console.log('bookedseats....');
+            
+          collection.find({
+            'hotel': req.params.hotel
+          }).toArray(function(err, hotel) {
+            if (!err) {
+            	console.log('hotel....'+hotel);
+            	console.log('reservedSeatsCount....'+reservedSeatsCount);
+
+              var reservedSeatsCount = hotel.length;
+              var strJson = "[";
+              
+              if (reservedSeatsCount > 0) {
+                for (var i = 0; i < reservedSeatsCount;) {
+                  strJson += '"' + hotel[i].seat + '"';
+                  i = i + 1;
+                  if (i < reservedSeatsCount) {
+                    strJson += ',';
+                  }
+                }
+              }
+              strJson += ']';
+              res.send(strJson);
+            
+            } else {
+            	
+            }
+          });  
+        } else {
+        }
+      }); 
+});
+
 app.post('/customer/bookseat', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -115,6 +155,9 @@ app.post('/customer/bookseat', function (req, res) {
       } else {
           res.send('{ updated : false }');
      }
+    
+    
+    
 });
 
 app.post('/customer/login', function (req, res) {
