@@ -70,6 +70,7 @@ var initDb = function(callback) {
 
 
 app.use('/register', require('./controllers/register'));
+app.use('/api/users', require('./controllers/api/users'));
 
 app.get('/userlogin', function (req, res) {
 	res.render('user/login.html', {});
@@ -78,6 +79,7 @@ app.get('/userlogin', function (req, res) {
 app.get('/useroldlogin', function (req, res) {
 	res.render('user/oldlogin.html', {});
 });
+
 
 app.get('/pagecount', function (req, res) {
 	  if (!db) {
