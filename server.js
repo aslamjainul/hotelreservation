@@ -14,7 +14,7 @@ app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 app.use(cookieParser());
 app.use(session({secret: "CodaLoginSecret"}));
-
+app.use(express.static(__dirname + '/resources'));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
