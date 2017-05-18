@@ -104,7 +104,7 @@ app.post('/register', function (req, res) {
         
         console.log('Going to Registering User with username....'+req.body.username);
 
-        db.customers.findOne(
+        db.collection('customers').findOne(
                 { username: req.body.username },
                 function (err, user) {
                     if (err){
