@@ -3,7 +3,7 @@ var router = express.Router();
 
 // routes
 //router.post('/authenticate', authenticateUser);
-router.post('/register', registerUser);
+router.post('/', registerUser);
 //router.get('/current', getCurrentUser);
 //router.put('/:_id', updateUser);
 //router.delete('/:_id', deleteUser);

@@ -8,12 +8,14 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
     // register using api to maintain clean separation between layers
+	 console.log('Registering user.... %s', req.body);
     request.post({
-        url: '/users/register',
+        url: '/api/users',
         form: req.body,
         json: true
     }, function (error, response, body) {
         if (error) {
+        	console.log('Error in registering user.... %s', response.body);
             return res.render('register', { error: 'An error occurred' });
         }
 
