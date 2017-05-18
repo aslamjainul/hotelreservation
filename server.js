@@ -12,6 +12,7 @@ Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+app.use(express.bodyParser());
 app.use(cookieParser());
 app.use(session({secret: "CodaLoginSecret"}));
 
