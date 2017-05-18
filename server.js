@@ -93,12 +93,37 @@ app.post('/register', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
 	}
-	console.log('Registering User....'+req.params.fullname);
-	console.log('Registering User....'+req.body.fullname);
-	var col = db.collection('customers');
-	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
-	console.log(hashedPassword);	
-    col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
+	
+    if (db) {
+/*        var col = db.collection('counts');
+        // Create a document with request IP and current time of request
+        col.insert({ip: req.ip, date: Date.now()});
+        col.count(function(err, count){
+          res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+        });*/
+        
+        console.log('Going to Registering User with username....'+req.body.username);
+
+        db.customers.findOne(
+                { username: req.body.username },
+                function (err, user) {
+                    if (err){
+                        res.render('register', { error : true});
+                    }
+                    if (user) {
+                        console.log('Username ' + req.body.username + ' is already taken');
+                        res.render('register', { error : true});
+                    } else {
+                        var col = db.collection('customers');
+                    	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+                    	console.log(hashedPassword);	
+                        col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
+                        res.render('register', { success : true});
+                    }
+                });
+      } else {
+        res.render('register', { error : true});
+     }
 });
 
 app.get('/pagecount', function (req, res) {
