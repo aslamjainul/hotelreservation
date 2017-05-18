@@ -7,22 +7,22 @@ var express = require('express'),
 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
+app.set('view engine', 'ejs');
 
 
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use(session({secret: "CodaLoginSecret"}));
 
-app.set('view engine', 'ejs');
 
 app.use("/resources",express.static(__dirname + "/resources"));
 app.use("/bootstrapresources",express.static(__dirname + "/bootstrapresources"));
