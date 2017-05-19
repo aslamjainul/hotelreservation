@@ -190,7 +190,7 @@ app.get('/api/reservedseatsforhotel', function (req, res) {
     db.collection('bookedseats', function(err, collection) {
         if (!err) {
           collection.find({
-            'hotel': req.session.hotel;
+            'hotel': req.session.hotel
           }).toArray(function(err, hotel) {
             if (!err) {
 
