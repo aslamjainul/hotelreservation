@@ -52,7 +52,17 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Table Booking.</h1>
+                    <h3 class="page-header">
+
+			Table Booking.
+			<div align='right'>
+				<select ng-options='v for (k,v) in listOfHotels' ng-change="changeHotel()" ng-model="selectedHotel">
+				</select>
+			</div> 
+
+
+		</h3>
+
                 </div>
 
             </div>
@@ -62,7 +72,13 @@
 </h3>
 			<br/>
 		</div>
-	<div ng-repeat="mainRow in numberOfRows">
+	<div ng-show="!selectedHotel" ng-hide="selectedHotel" >
+		<div class="alert alert-danger">
+			Please choose a hotel.
+		</div>
+	</div>
+
+	<div ng-repeat="mainRow in numberOfRows" ng-show="selectedHotel" ng-hide="!selectedHotel" >
             <div class="row">
                
 			<div ng-repeat="table in numberOfTables">

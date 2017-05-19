@@ -94,7 +94,7 @@ app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
 });
 
-app.get('/customer/getreservedseats/:hotel', function (req, res) {
+app.get('/api/reservedseats/:hotel', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
 	}
@@ -134,7 +134,44 @@ app.get('/customer/getreservedseats/:hotel', function (req, res) {
       }); 
 });
 
-app.post('/customer/bookseat', function (req, res) {
+app.get('/api/hotels', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    db.collection('hotels', function(err, collection) {
+        if (!err) {
+        	console.log('hotels....');
+            
+          collection.find({
+          }).toArray(function(err, hotel) {
+            if (!err) {
+              var reservedSeatsCount = hotel.length;
+              var strJson = "[";
+              
+              if (reservedSeatsCount > 0) {
+                for (var i = 0; i < reservedSeatsCount;) {
+                  strJson += '"' + hotel[i].name + '"';
+                  i = i + 1;
+                  if (i < reservedSeatsCount) {
+                    strJson += ',';
+                  }
+                }
+              }
+              strJson += ']';
+              res.send(strJson);
+            
+            } else {
+            	
+            }
+          });  
+        } else {
+        }
+      }); 
+});
+
+
+app.post('/api/bookseat', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
 	}
