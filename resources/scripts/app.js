@@ -6,9 +6,6 @@ angular.module('seatReservationApp').controller(
 		'MainCtrl',
 		function($scope) {
 
-			// $scope.reservedTables = ['A2', 'A3', 'B5', 'C6', 'C7',
-			// 'C8', 'J1', 'J2', 'J3', 'J4'];
-			// var items = [];
 			$scope.updated = null;
 			$scope.reservedTables = [];
 			$scope.selectedTables = [];
@@ -77,7 +74,6 @@ angular.module('seatReservationApp').controller(
 			}
 
 			$scope.changeHotel = function() {
-				// alert('hotel -- '+$scope.selectedHotel);
 				$scope.reservedTables = [];
 				$scope.updated = null;
 
@@ -119,16 +115,6 @@ angular.module('seatReservationApp').controller(
 			}
 
 			$scope.init = function() {
-				/*
-				 * $.get("aslam.html", // $.get("/customer/getreservedseats/" +
-				 * $scope.selectedHotel, function(data, status) { data =
-				 * $.parseJSON(data); $.each(data, function(key, val) {
-				 * $scope.reservedTables.push(val); $scope.$apply(function() {
-				 * 
-				 * });
-				 * 
-				 * }); });
-				 */
 
 				// $.get("hotel.html",
 				$.get("/api/hotels", function(data, status) {
@@ -151,7 +137,7 @@ angular.module('seatReservationApp').controller('MyBookings', function($scope) {
 	$scope.init = function() {
 
 		$.get("/api/mybookings", function(data, status) {
-		//$.get("mybookings.html", function(data, status) {
+			// $.get("mybookings.html", function(data, status) {
 			data = $.parseJSON(data);
 
 			$.each(data, function(key, val) {
@@ -169,6 +155,37 @@ angular.module('seatReservationApp').controller('MyBookings', function($scope) {
 			$('#dataTables-example').DataTable({
 				responsive : true
 			});
+		});
+	}
+
+});
+
+
+
+angular.module('seatReservationApp').controller('login', function($scope) {
+	$scope.successfulLogin = null;
+	$scope.failureLogin = null;
+	$scope.username = '';
+	$scope.password = '';
+	$scope.loginUser = function() {
+	
+		//alert($scope.username+" -- "+$scope.password)
+		$.post("/api/customerlogin",{username:$scope.username,password:$scope.password}, function(data, status) {
+		// $.get("loginresult.html", function(data, status) {
+			data = $.parseJSON(data);
+			if(data.success){
+				$scope.successfulLogin = 'success';
+				$scope.failureLogin = null;
+				window.location.replace("/customer/dashboard");
+			}else{
+
+				$scope.failureLogin = 'failure';
+				$scope.successfulLogin = null;	
+			}
+$scope.$apply(function() {
+
+				});
+			
 		});
 	}
 

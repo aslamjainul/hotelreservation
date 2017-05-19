@@ -1,0 +1,62 @@
+<%- include('../common/header') %>
+
+
+</head>
+<body>
+<div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Customer Login</h3>
+                    </div>
+                    <div class="panel-body">
+                    <% if(success) { %>
+        <div class="alert alert-success"> Logging in...</div>
+    <% } %>
+    
+           <% if(error) { %>
+        <div class="alert alert-danger">Incorrect username/password.</div>
+    <% } %>
+    
+    <% if(!success) { %>
+                        <form role="form" method="post" action="/customer/login">
+                            <fieldset>
+                             <div class="form-group">
+                                       <select class="form-control">
+                                       <option>*Choose a hotel*</option>
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Username" name="username" type="text" value="<%= locals.username || '' %>" autofocus required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+                                </div>
+                                
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-default">Clear</button>
+         
+            <a href="/customer/registration" class="btn btn-link">Back to Registration</a>
+        </div>
+                                
+                            </fieldset>
+                        </form>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include('../common/footer') %> 
+
+<% if(success) { %>
+        <meta http-equiv="refresh" content="3; url=/customer/dashboard">
+    <% } %>

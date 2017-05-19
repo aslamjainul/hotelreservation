@@ -107,6 +107,13 @@ app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
 });
 
+app.get('/customer/logout', function (req, res) {
+	req.session.userlogin = false;
+    req.session.username = -1;
+    res.render('customer/login',{ error : null,success:null});
+});
+
+
 app.get('/api/reservedseats/:hotel', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -244,6 +251,36 @@ app.post('/api/bookseat', function (req, res) {
     
     
     
+});
+
+app.post('/api/customerlogin', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+        console.log('Logging in with user....'+req.body.username);
+        var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+        console.log(hashedPassword);	
+        db.collection('customers').findOne(
+                { username: req.body.username ,password: hashedPassword },
+                function (err, user) {
+                    if (err){
+                    	   res.send('{ "failure" : "true"}');
+                    }
+                    if (user) {
+                    	if(!req.session.userlogin){
+                    		req.session.userlogin = true;
+                    		req.session.username = req.body.username;
+                	     }
+                 	   res.send('{ "success" : "true"}');
+                    } else {
+                 	   res.send('{ "failure" : "true"}');
+                    }
+                });
+      } else {
+   	   res.send('{ "failure" : "true"}');
+     }
 });
 
 app.post('/customer/login', function (req, res) {
