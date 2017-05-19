@@ -78,17 +78,15 @@ var initDb = function(callback) {
   });
 };
 
-app.get('/userlogin', function (req, res) {
-	res.render('user/login.html', {});
+app.get('/', function (req, res) {
+	res.render('index.html', {});
 });
 
-app.get('/useroldlogin', function (req, res) {
-	res.render('user/oldlogin.html', {});
-});
+/* Customer Pages*/
 
 app.get('/customer/dashboard', function (req, res) {
    	if(!req.session.userlogin){
-   	    res.render('customer/login',{ error : null,success:null});
+   	    res.render('customer/login',{});
      }else{
     	 res.render('customer/dashboard',{currentUserName: req.session.username});
      }
@@ -96,7 +94,7 @@ app.get('/customer/dashboard', function (req, res) {
 
 app.get('/customer/bookings', function (req, res) {
    	if(!req.session.userlogin){
-   	    res.render('customer/login',{ error : null,success:null});
+   	    res.render('customer/login',{ });
      }else{
     	 res.render('customer/bookings',{currentUserName: req.session.username});
      }
@@ -104,15 +102,28 @@ app.get('/customer/bookings', function (req, res) {
 
 
 app.get('/customer/login', function (req, res) {
-    res.render('customer/login',{ error : null,success:null});
+    res.render('customer/login',{ });
 });
 
 app.get('/customer/logout', function (req, res) {
 	req.session.userlogin = false;
     req.session.username = -1;
-    res.render('customer/login',{ error : null,success:null});
+    res.render('customer/login',{ });
 });
 
+app.get('/customer/registration', function (req, res) {
+    res.render('customer/registration',{});
+});
+
+
+/* hotelmanager Pages*/
+
+app.get('/hotelmanager/login', function (req, res) {
+    res.render('hotelmanager/login',{ });
+});
+
+
+/*APIs.. Need to be authenticated.*/
 
 app.get('/api/reservedseats/:hotel', function (req, res) {
 	if (!db) {
@@ -127,8 +138,6 @@ app.get('/api/reservedseats/:hotel', function (req, res) {
             'hotel': req.params.hotel
           }).toArray(function(err, hotel) {
             if (!err) {
-            	console.log('hotel....'+hotel);
-            	console.log('reservedSeatsCount....'+reservedSeatsCount);
 
               var reservedSeatsCount = hotel.length;
               var strJson = "[";
@@ -282,40 +291,6 @@ app.post('/api/customerlogin', function (req, res) {
    	   res.send('{ "failure" : "true"}');
      }
 });
-/*
-app.post('/customer/login', function (req, res) {
-	if (!db) {
-		initDb(function(err){});
-	}
-	
-    if (db) {     
-        console.log('Logging in with user....'+req.body.username);
-        var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
-        console.log(hashedPassword);	
-        db.collection('customers').findOne(
-                { username: req.body.username ,password: hashedPassword },
-                function (err, user) {
-                    if (err){
-                        res.render('customer/login', { error : 1,success:null});
-                    }
-                    if (user) {
-                    	if(!req.session.userlogin){
-                    		req.session.userlogin = true;
-                    		req.session.username = req.body.username;
-                	     }
-                        res.render('customer/login', { error : null,success:1});
-                    } else {
-                    	res.render('customer/login', { error : 1,success:null});
-                    }
-                });
-      } else {
-        res.render('customer/login', { error : 1,success:null});
-     }
-});
-*/
-app.get('/customer/registration', function (req, res) {
-    res.render('customer/registration',{ error : null,success:null});
-});
 
 app.post('/api/customerregistration', function (req, res) {
 	if (!db) {
@@ -323,7 +298,7 @@ app.post('/api/customerregistration', function (req, res) {
 	}
 	
     if (db) {     
-        console.log('Going to Registering User with username....'+req.body.username);
+        console.log(' Registering User with username....'+req.body.username);
 
         db.collection('customers').findOne(
                 { username: req.body.username },
@@ -339,6 +314,11 @@ app.post('/api/customerregistration', function (req, res) {
                     	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
                     	console.log(hashedPassword);	
                         col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
+                    	if(!req.session.userlogin){
+                    		req.session.userlogin = true;
+                    		req.session.username = req.body.username;
+                	     }
+
                   	   res.send('{ "success" : "true"}');
                     }
                 });
@@ -348,35 +328,6 @@ app.post('/api/customerregistration', function (req, res) {
 });
 
 
-app.post('/customer/registration', function (req, res) {
-	if (!db) {
-		initDb(function(err){});
-	}
-	
-    if (db) {     
-        console.log('Going to Registering User with username....'+req.body.username);
-
-        db.collection('customers').findOne(
-                { username: req.body.username },
-                function (err, user) {
-                    if (err){
-                        res.render('customer/registration', { error : 1,success:null});
-                    }
-                    if (user) {
-                        console.log('Username ' + req.body.username + ' is already taken');
-                        res.render('customer/registration', { error : 1,success:null});
-                    } else {
-                        var col = db.collection('customers');
-                    	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
-                    	console.log(hashedPassword);	
-                        col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
-                        res.render('customer/registration', { error : null,success:1});
-                    }
-                });
-      } else {
-        res.render('customer/registration', { error : 1,success:null});
-     }
-});
 
 app.get('/pagecount', function (req, res) {
 	  if (!db) {
@@ -390,30 +341,6 @@ app.get('/pagecount', function (req, res) {
 	    res.send('{ pageCount: -1 }');
 	  }
 	});
-
-app.get('/', function (req, res) {
-	  if (!db) {
-	    initDb(function(err){});
-	  }
-	  if (db) {
-	    var col = db.collection('login');
-	    
-	    if(req.session.page_views){
-	        req.session.page_views++;
-	        col.insert({ip: req.ip, views:req.session.page_views, date: Date.now()});
-	        res.send("Page accessed - " + req.session.page_views + " times");
-	     }else{
-	        req.session.page_views = 1;
-	        var first ='first';
-	        col.insert({firsttime:'first', ip: req.ip, views:req.session.page_views, date: Date.now()});
-	        res.send("First time login");
-	     }
-	    
-	    col.insert({ip: req.ip, date: Date.now()});
-	  } else {
-		     res.send("No DB Connection");
-	  }
-});
 
 
 // error handling
