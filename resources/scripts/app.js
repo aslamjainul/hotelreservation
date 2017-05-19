@@ -8,9 +8,9 @@ angular.module('seatReservationApp').controller(
 
 			// $scope.reservedTables = ['A2', 'A3', 'B5', 'C6', 'C7',
 			// 'C8', 'J1', 'J2', 'J3', 'J4'];
-			var items = [];
+			//var items = [];
 
-			$scope.reservedTables = items;
+			$scope.reservedTables = [];
 			$scope.selectedTables = [];
 			$scope.selectedHotel = 'hello';
 			$scope.numberOfTables = [ 0, 1, 2 ];
@@ -76,19 +76,18 @@ angular.module('seatReservationApp').controller(
 
 			$scope.showSelected = function() {
 				if ($scope.selectedTables.length > 0) {
-					alert("Selected Seats: \n" + $scope.selectedTables);
+					//alert("Selected Seats: \n" + $scope.selectedTables);
 					$.post("/customer/bookseat", {
 						seats : $scope.selectedTables,
 						hotel : $scope.selectedHotel,
 						user : 'hello'
 					}, function(data, status) {
-						alert("Data: " + data + "\nStatus: " + status);
+						//alert("Data: " + data + "\nStatus: " + status);
 						document.location.reload(true);
-
 					});
 
 				} else {
-					alert("No seats selected!");
+					//alert("No seats selected!");
 				}
 			}
 
@@ -96,14 +95,14 @@ angular.module('seatReservationApp').controller(
 				$.get("/customer/getreservedseats/" + $scope.selectedHotel,
 						function(data, status) {
 					data = $.parseJSON(data);
-					items = [];
-							alert(data);
+					//items = [];
+							//alert(data);
 							$.each(data, function(key, val) {
 								$scope.reservedTables.push(val);
 								$scope.$apply(function() {
 
 								});
-								items.push(val);
+								//items.push(val);
 								// "</li>" );
 							});
 							// alert(items);
