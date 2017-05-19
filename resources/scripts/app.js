@@ -81,9 +81,7 @@ angular.module('seatReservationApp').controller(
 						user : 'hello'
 					}, function(data, status) {
 						alert("Data: " + data + "\nStatus: " + status);
-						$scope.$apply(function() {
-
-						});
+						document.location.reload(true);
 
 					});
 
@@ -96,9 +94,9 @@ angular.module('seatReservationApp').controller(
 				$.get("/customer/getreservedseats/" + $scope.selectedHotel,
 						function(data, status) {
 							var items = [];
+							alert(data);
 							$.each(data, function(key, val) {
 								$scope.reservedTables.push(val);
-
 								$scope.$apply(function() {
 
 								});
