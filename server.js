@@ -87,7 +87,11 @@ app.get('/useroldlogin', function (req, res) {
 });
 
 app.get('/customer/dashboard', function (req, res) {
-    res.render('customer/dashboard',{ error : null,success:null});
+   	if(!req.session.userlogin){
+   	    res.render('customer/login',{ error : null,success:null});
+     }else{
+    	 res.render('customer/dashboard',{currentUserName: req.session.username});
+     }
 });
 
 app.get('/customer/login', function (req, res) {
@@ -213,7 +217,10 @@ app.post('/customer/login', function (req, res) {
                         res.render('customer/login', { error : 1,success:null});
                     }
                     if (user) {
-                    	//Should be redirected to homepage..
+                    	if(!req.session.userlogin){
+                    		req.session.userlogin = true;
+                    		req.session.username = req.body.username;
+                	     }
                         res.render('customer/login', { error : null,success:1});
                     } else {
                     	res.render('customer/login', { error : 1,success:null});

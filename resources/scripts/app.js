@@ -9,7 +9,7 @@ angular.module('seatReservationApp').controller(
 			// $scope.reservedTables = ['A2', 'A3', 'B5', 'C6', 'C7',
 			// 'C8', 'J1', 'J2', 'J3', 'J4'];
 			// var items = [];
-
+			$scope.updated = null;
 			$scope.reservedTables = [];
 			$scope.selectedTables = [];
 			$scope.selectedHotel = null;
@@ -79,6 +79,7 @@ angular.module('seatReservationApp').controller(
 			$scope.changeHotel = function() {
 				//alert('hotel -- '+$scope.selectedHotel);
 				$scope.reservedTables = [];
+				$scope.updated = null;
 
 //$.get($scope.selectedHotel+".html",
 				$.get("/api/reservedseats/" + $scope.selectedHotel,
@@ -108,8 +109,9 @@ angular.module('seatReservationApp').controller(
 					});
 					for (var key in $scope.selectedTables) {
 						$scope.reservedTables.push($scope.selectedTables[key]);
-          				  }					
-						
+					}					
+					$scope.selectedTables = [];
+					$scope.updated = "updated";
 
 				} else {
 					// alert("No seats selected!");
