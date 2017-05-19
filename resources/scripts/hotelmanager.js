@@ -166,10 +166,11 @@ angular.module('hotelManagerModule').controller('login', function($scope) {
 	$scope.username = '';
 	$scope.password = '';
 	$scope.listOfHotels = [];
-	
+
 	$scope.init = function() {
-		alert('hallll');
-		$.get("/api/hotels", function(data, status) {
+		// alert('hallll');
+		$.get("hotelList.html", function(data, status) {
+			// $.get("/api/hotels", function(data, status) {
 			data = $.parseJSON(data);
 			$.each(data, function(key, val) {
 				$scope.listOfHotels.push(val);
@@ -179,6 +180,10 @@ angular.module('hotelManagerModule').controller('login', function($scope) {
 		});
 	};
 	$scope.loginUser = function() {
+		if (!$scope.selectedHotel) {
+			alert('choose hotel');
+			return;
+		}
 		if ($scope.username.length < 4) {
 			$("#username").focus();
 			return;
@@ -187,12 +192,11 @@ angular.module('hotelManagerModule').controller('login', function($scope) {
 			$("#password").focus();
 			return;
 		}
-		// alert($scope.username+" -- "+$scope.password)
-		$.post("/api/customerlogin", {
+		$.post("/api/hotelmanagerlogin", {
+			hotel : $scope.selectedHotel,
 			username : $scope.username,
 			password : $scope.password
 		}, function(data, status) {
-			// $.get("loginresult.html", function(data, status) {
 			data = $.parseJSON(data);
 			if (data.success) {
 				$scope.successfulLogin = 'success';

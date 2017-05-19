@@ -33,9 +33,13 @@
     
 
                             <fieldset ng-show="!successfulLogin">
+
+                                <div class="form-group">
+				*Choose your hotel and login with username and password .
+</div>
                                 <div class="form-group">
                             
-                            <select ng-options='v for (k,v) in listOfHotels' ng-change="changeHotel()" ng-model="selectedHotel">
+                            <select ng-options='v for (k,v) in listOfHotels'  ng-model="selectedHotel">
 				</select>
 				</div>
                                 <div class="form-group">
