@@ -101,6 +101,10 @@ app.get('/customer/bookings', function (req, res) {
 });
 
 
+app.get('/admin/addhotel', function (req, res) {
+    res.render('admin/addhotel',{ });
+});
+
 app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ });
 });
@@ -262,6 +266,8 @@ app.post('/api/bookseat', function (req, res) {
     
 });
 
+
+
 app.post('/api/customerlogin', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -292,14 +298,66 @@ app.post('/api/customerlogin', function (req, res) {
      }
 });
 
+app.post('/api/hotelmanagerlogin', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+        var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+        db.collection('hotels').findOne(
+                { name: req.body.hotel,username: req.body.username ,password: hashedPassword },
+                function (err, user) {
+                    if (err){
+                    	   res.send('{ "failure" : "true"}');
+                    }
+                    if (user) {
+                    	if(!req.session.managerlogin){
+                    		req.session.managerlogin = true;
+                    		req.session.managername = req.body.username;
+                	     }
+                 	   res.send('{ "success" : "true"}');
+                    } else {
+                 	   res.send('{ "failure" : "true"}');
+                    }
+                });
+      } else {
+   	   res.send('{ "failure" : "true"}');
+     }
+});
+
+app.post('/api/addhotel', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+        db.collection('hotels').findOne(
+                { name: req.body.hotel },
+                function (err, user) {
+                    if (err){
+                  	   res.send('{ "failure" : "true"}');
+                    }
+                    if (user) {
+                  	   res.send('{ "failure" : "true"}');
+                    } else {
+                        var col = db.collection('hotels');
+                    	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+                    	console.log(hashedPassword);	
+                        col.insert({name: req.body.hotel, username: req.body.username,password: hashedPassword});
+                    	res.send('{ "success" : "true"}');
+                    }
+                });
+      } else {
+    	   res.send('{ "failure" : "true"}');
+     }
+});
 app.post('/api/customerregistration', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
 	}
 	
     if (db) {     
-        console.log(' Registering User with username....'+req.body.username);
-
         db.collection('customers').findOne(
                 { username: req.body.username },
                 function (err, user) {
@@ -307,7 +365,6 @@ app.post('/api/customerregistration', function (req, res) {
                   	   res.send('{ "failure" : "true"}');
                     }
                     if (user) {
-                        console.log('Username ' + req.body.username + ' is already taken');
                   	   res.send('{ "failure" : "true"}');
                     } else {
                         var col = db.collection('customers');
