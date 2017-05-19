@@ -8,7 +8,9 @@ angular.module('seatReservationApp').controller(
 
 			// $scope.reservedTables = ['A2', 'A3', 'B5', 'C6', 'C7',
 			// 'C8', 'J1', 'J2', 'J3', 'J4'];
-			$scope.reservedTables = [];
+			var items = [];
+
+			$scope.reservedTables = items;
 			$scope.selectedTables = [];
 			$scope.selectedHotel = 'hello';
 			$scope.numberOfTables = [ 0, 1, 2 ];
@@ -93,11 +95,11 @@ angular.module('seatReservationApp').controller(
 			$scope.init = function() {
 				$.get("/customer/getreservedseats/" + $scope.selectedHotel,
 						function(data, status) {
-							var items = [];
+					items = [];
 							alert(data);
 							$.each(data, function(key, val) {
-								$scope.reservedTables.push(val);
-								// items.push( "<li id='" + key + "'>" + val +
+								//$scope.reservedTables.push(val);
+								items.push(val);
 								// "</li>" );
 							});
 							// alert(items);
