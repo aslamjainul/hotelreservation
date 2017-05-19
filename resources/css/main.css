@@ -1,3 +1,31 @@
+.padding-right {
+  padding-right: 10px;
+}
+
+.padding-bottom {
+  padding-bottom: 10px;
+}
+
+.padding-left {
+  padding-left: 10px;
+}
+
+.seatLayout {
+  margin: 30px auto;
+}
+
+.seat {
+  cursor: pointer;
+}
+
+.buttons {
+  margin: 30px auto;
+}
+
+.legend img{
+  vertical-align: bottom;
+}
+
 .rotate180 {
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
