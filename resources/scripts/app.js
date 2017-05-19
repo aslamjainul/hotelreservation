@@ -166,11 +166,11 @@ angular.module('seatReservationApp').controller('login', function($scope) {
 	$scope.username = '';
 	$scope.password = '';
 	$scope.loginUser = function() {
-		if($scope.username.length<4){
+		if ($scope.username.length < 4) {
 			$("#username").focus();
 			return;
 		}
-		if($scope.password.length<4){
+		if ($scope.password.length < 4) {
 			$("#password").focus();
 			return;
 		}
@@ -198,3 +198,50 @@ angular.module('seatReservationApp').controller('login', function($scope) {
 	}
 
 });
+
+angular.module('seatReservationApp').controller('registration',
+		function($scope) {
+			$scope.successfulRegistration = null;
+			$scope.failureRegistration = null;
+			$scope.username = '';
+			$scope.password = '';
+			$scope.fullname = '';
+			$scope.registerUser = function() {
+
+				if ($scope.fullname.length < 4) {
+					$("#fullname").focus();
+					return;
+				}
+				if ($scope.username.length < 4) {
+					$("#username").focus();
+					return;
+				}
+				if ($scope.password.length < 4) {
+					$("#password").focus();
+					return;
+				}
+				// alert($scope.username+" -- "+$scope.password)
+				$.post("/api/customerregistration", {
+					fullname : $scope.fullname,
+					username : $scope.username,
+					password : $scope.password
+				}, function(data, status) {
+					// $.get("loginresult.html", function(data, status) {
+					data = $.parseJSON(data);
+					if (data.success) {
+						$scope.successfulRegistration = 'success';
+						$scope.failureRegistration = null;
+						window.location.replace("/customer/dashboard");
+					} else {
+
+						$scope.failureRegistration = 'failure';
+						$scope.successfulRegistration = null;
+					}
+					$scope.$apply(function() {
+
+					});
+
+				});
+			}
+
+		});
