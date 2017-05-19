@@ -95,10 +95,14 @@ angular.module('seatReservationApp').controller(
 			$scope.init = function() {
 				$.get("/customer/getreservedseats/" + $scope.selectedHotel,
 						function(data, status) {
+					data = $.parseJSON(data);
 					items = [];
 							alert(data);
 							$.each(data, function(key, val) {
-								//$scope.reservedTables.push(val);
+								$scope.reservedTables.push(val);
+								$scope.$apply(function() {
+
+								});
 								items.push(val);
 								// "</li>" );
 							});
