@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+
+
+    <link href="../bootstrapresources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrapresources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="../bootstrapresources/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../bootstrapresources/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    <link href="../bootstrapresources/dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="../bootstrapresources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body ng-app="seatReservationApp">
+
+    <div id="wrapper" ng-controller="MyBookings" data-ng-init="init()">
+ <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+             
+                <a class="navbar-brand" href="#">Welcome <%= locals.currentUserName || '' %>  &nbsp;&nbsp;&nbsp;&nbsp; |      &nbsp;&nbsp;&nbsp;&nbsp; Coda Global - Hotel Booking   </a>
+            </div>
+
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="/customer/dashboard"><i class="fa fa-table fa-fw"></i> Book a table</a>
+                        </li>
+                        <li>
+                            <a href="/customer/bookings" style="background-color:#eeeeee"><i class="fa fa-sitemap fa-fw"></i> My Bookings</a>
+                        </li>
+                        <li>
+                            <a href="/customer/logout"><i class="fa fa-files-o fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">My Bookings</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Booked Seats
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Hotel</th>
+                                        <th>Seat</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="gradeX" ng-repeat="itemToAdd in itemsToAdd" ng-hide="!itemToAdd">
+                                        <td>{{itemToAdd.user}}</td>
+                                        <td>{{itemToAdd.hotel}}</td>
+                                        <td>{{itemToAdd.seat}}</td>
+                                        <td class="center"><center>X</center></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="../bootstrapresources/vendor/jquery/jquery.min.js"></script>
+    <script src="../bootstrapresources/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrapresources/vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="../bootstrapresources/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../bootstrapresources/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../bootstrapresources/vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="../bootstrapresources/dist/js/sb-admin-2.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+	<script src="../resources/scripts/app.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        
+    });
+    </script>
+
+</body>
+
+</html>

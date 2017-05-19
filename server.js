@@ -94,6 +94,15 @@ app.get('/customer/dashboard', function (req, res) {
      }
 });
 
+app.get('/customer/bookings', function (req, res) {
+   	if(!req.session.userlogin){
+   	    res.render('customer/login',{ error : null,success:null});
+     }else{
+    	 res.render('customer/bookings',{currentUserName: req.session.username});
+     }
+});
+
+
 app.get('/customer/login', function (req, res) {
     res.render('customer/login',{ error : null,success:null});
 });
@@ -174,6 +183,42 @@ app.get('/api/hotels', function (req, res) {
       }); 
 });
 
+app.get('/api/mybookings', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    db.collection('bookedseats', function(err, collection) {
+        if (!err) {
+        	console.log('bookedseats....');
+            
+          collection.find({
+              'user': req.session.username
+          }).toArray(function(err, hotel) {
+            if (!err) {
+              var reservedSeatsCount = hotel.length;
+              var strJson = "[";
+              
+              if (reservedSeatsCount > 0) {
+                for (var i = 0; i < reservedSeatsCount;) {
+                  strJson += '{"user":"' + hotel[i].user + '","seat":"' + hotel[i].seat + '","hotel":"' + hotel[i].hotel + '",}';
+                  i = i + 1;
+                  if (i < reservedSeatsCount) {
+                    strJson += ',';
+                  }
+                }
+              }
+              strJson += ']';
+              res.send(strJson);
+            
+            } else {
+            	
+            }
+          });  
+        } else {
+        }
+      }); 
+});
 
 app.post('/api/bookseat', function (req, res) {
 	if (!db) {
@@ -182,7 +227,7 @@ app.post('/api/bookseat', function (req, res) {
 	
     if (db) {     
     	var hotel = req.body.hotel;
-    	var user = req.body.user;
+    	var user = req.session.username;
     	
     	var seats = req.body['seats[]'];
     	console.log('seats....'+seats);

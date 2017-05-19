@@ -77,29 +77,29 @@ angular.module('seatReservationApp').controller(
 			}
 
 			$scope.changeHotel = function() {
-				//alert('hotel -- '+$scope.selectedHotel);
+				// alert('hotel -- '+$scope.selectedHotel);
 				$scope.reservedTables = [];
 				$scope.updated = null;
 
-//$.get($scope.selectedHotel+".html",
-				$.get("/api/reservedseats/" + $scope.selectedHotel,
-						function(data, status) {
-							data = $.parseJSON(data);
-							$.each(data, function(key, val) {
-								$scope.reservedTables.push(val);
-								$scope.$apply(function() {
+				// $.get($scope.selectedHotel+".html",
+				$.get("/api/reservedseats/" + $scope.selectedHotel, function(
+						data, status) {
+					data = $.parseJSON(data);
+					$.each(data, function(key, val) {
+						$scope.reservedTables.push(val);
+						$scope.$apply(function() {
 
-								});
-
-							});
 						});
+
+					});
+				});
 
 			}
 
 			$scope.showSelected = function() {
 				if ($scope.selectedTables.length > 0) {
-			//		 $.post("http://appserver-jainulaslamcoda.1d35.starter-us-east-1.openshiftapps.com/customer/bookseat",
-				//	 {
+					// $.post("http://appserver-jainulaslamcoda.1d35.starter-us-east-1.openshiftapps.com/customer/bookseat",
+					// {
 					$.post("/api/bookseat", {
 						seats : $scope.selectedTables,
 						hotel : $scope.selectedHotel,
@@ -107,9 +107,9 @@ angular.module('seatReservationApp').controller(
 					}, function(data, status) {
 
 					});
-					for (var key in $scope.selectedTables) {
+					for ( var key in $scope.selectedTables) {
 						$scope.reservedTables.push($scope.selectedTables[key]);
-					}					
+					}
 					$scope.selectedTables = [];
 					$scope.updated = "updated";
 
@@ -119,32 +119,57 @@ angular.module('seatReservationApp').controller(
 			}
 
 			$scope.init = function() {
-			 	/*$.get("aslam.html",
-			//	$.get("/customer/getreservedseats/" + $scope.selectedHotel,
-						function(data, status) {
-							data = $.parseJSON(data);
-							$.each(data, function(key, val) {
-								$scope.reservedTables.push(val);
-								$scope.$apply(function() {
+				/*
+				 * $.get("aslam.html", // $.get("/customer/getreservedseats/" +
+				 * $scope.selectedHotel, function(data, status) { data =
+				 * $.parseJSON(data); $.each(data, function(key, val) {
+				 * $scope.reservedTables.push(val); $scope.$apply(function() {
+				 * 
+				 * });
+				 * 
+				 * }); });
+				 */
 
-								});
+				// $.get("hotel.html",
+				$.get("/api/hotels", function(data, status) {
+					data = $.parseJSON(data);
+					$.each(data, function(key, val) {
+						$scope.listOfHotels.push(val);
+						$scope.$apply(function() {
 
-							});
-						});*/
-
-//				$.get("hotel.html",
-				$.get("/api/hotels",
-						function(data, status) {
-							data = $.parseJSON(data);
-							$.each(data, function(key, val) {
-								$scope.listOfHotels.push(val);
-								$scope.$apply(function() {
-
-								});
-
-							});
 						});
+
+					});
+				});
 
 			};
 
 		});
+
+angular.module('seatReservationApp').controller('MyBookings', function($scope) {
+	$scope.itemsToAdd = [];
+	$scope.init = function() {
+
+		$.get("/api/mybookings", function(data, status) {
+		//$.get("mybookings.html", function(data, status) {
+			data = $.parseJSON(data);
+
+			$.each(data, function(key, val) {
+				$scope.itemsToAdd.push({
+					user : val.user,
+					seat : val.seat,
+					hotel : val.hotel,
+				});
+
+				$scope.$apply(function() {
+
+				});
+
+			});
+			$('#dataTables-example').DataTable({
+				responsive : true
+			});
+		});
+	}
+
+});
