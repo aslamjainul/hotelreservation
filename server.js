@@ -92,11 +92,29 @@ app.get('/customer/dashboard', function (req, res) {
      }
 });
 
+app.get('/hotelmanager/dashboard', function (req, res) {
+   	if(!req.session.managerlogin){
+   	    res.render('hotelmanager/login',{});
+     }else{
+    	 res.render('hotelmanager/dashboard',{currentUserName: req.session.managername});
+     }
+});
+
+
+
 app.get('/customer/bookings', function (req, res) {
    	if(!req.session.userlogin){
    	    res.render('customer/login',{ });
      }else{
     	 res.render('customer/bookings',{currentUserName: req.session.username});
+     }
+});
+
+app.get('/hotelmanager/bookings', function (req, res) {
+   	if(!req.session.managerlogin){
+   	    res.render('hotelmanager/login',{ });
+     }else{
+    	 res.render('hotelmanager/bookings',{currentUserName: req.session.managername});
      }
 });
 
@@ -108,6 +126,12 @@ app.get('/customer/logout', function (req, res) {
 	req.session.userlogin = false;
     req.session.username = -1;
     res.render('customer/login',{ });
+});
+
+app.get('/hotelmanager/logout', function (req, res) {
+	req.session.managerlogin = false;
+    req.session.managername = -1;
+    res.render('hotelmanager/login',{ });
 });
 
 app.get('/customer/registration', function (req, res) {
@@ -157,7 +181,43 @@ app.post('/api/addhotel', function (req, res) {
      }
 });
 
-//select seat from bookedseats WHERE hotel = 
+
+app.get('/api/reservedseatsforhotel', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    db.collection('bookedseats', function(err, collection) {
+        if (!err) {
+          collection.find({
+            'hotel': req.session.hotel;
+          }).toArray(function(err, hotel) {
+            if (!err) {
+
+              var reservedSeatsCount = hotel.length;
+              var strJson = "[";
+              
+              if (reservedSeatsCount > 0) {
+                for (var i = 0; i < reservedSeatsCount;) {
+                  strJson += '"' + hotel[i].seat + '"';
+                  i = i + 1;
+                  if (i < reservedSeatsCount) {
+                    strJson += ',';
+                  }
+                }
+              }
+              strJson += ']';
+              res.send(strJson);
+            
+            } else {
+            	
+            }
+          });  
+        } else {
+        }
+      }); 
+});
+
 app.get('/api/reservedseats/:hotel', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -270,6 +330,67 @@ app.get('/api/mybookings', function (req, res) {
       }); 
 });
 
+
+app.get('/api/allbookings', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    db.collection('bookedseats', function(err, collection) {
+        if (!err) {
+          collection.find({
+              'hotel': req.session.hotel
+          }).toArray(function(err, hotel) {
+            if (!err) {
+              var reservedSeatsCount = hotel.length;
+              var strJson = "[";
+              
+              if (reservedSeatsCount > 0) {
+                for (var i = 0; i < reservedSeatsCount;) {
+                  strJson += '{"user":"' + hotel[i].user + '","seat":"' + hotel[i].seat + '","hotel":"' + hotel[i].hotel + '"}';
+                  i = i + 1;
+                  if (i < reservedSeatsCount) {
+                    strJson += ',';
+                  }
+                }
+              }
+              strJson += ']';
+              res.send(strJson);
+            
+            } else {
+            	
+            }
+          });  
+        } else {
+        }
+      }); 
+});
+
+
+app.post('/api/bookseatforhotel', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+    	var hotel = req.session.hotel;
+    	var user = req.session.managername;
+    	var seats = req.body['seats[]'];
+    	console.log('seats....'+seats);
+        console.log('user....'+user);
+        for (var key in seats) {
+            var col = db.collection('bookedseats');
+        	col.insert({seat: seats[key], hotel: hotel,user: user});
+            console.log("key: %o, value: %o", key, seats[key])
+        }
+        res.send('{ updated : true }');
+      } else {
+          res.send('{ updated : false }');
+     }
+    
+    
+    
+});
 app.post('/api/bookseat', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -346,6 +467,8 @@ app.post('/api/hotelmanagerlogin', function (req, res) {
                     	if(!req.session.managerlogin){
                     		req.session.managerlogin = true;
                     		req.session.managername = req.body.username;
+                    		req.session.hotel = req.body.hotel;
+
                 	     }
                  	   res.send('{ "success" : "true"}');
                     } else {

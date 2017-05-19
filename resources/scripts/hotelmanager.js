@@ -9,7 +9,6 @@ angular.module('hotelManagerModule').controller(
 			$scope.updated = null;
 			$scope.reservedTables = [];
 			$scope.selectedTables = [];
-			$scope.selectedHotel = null;
 			$scope.numberOfTables = [ 0, 1, 2 ];
 			$scope.numberOfRows = [ 0, 1, 2 ];
 
@@ -77,28 +76,13 @@ angular.module('hotelManagerModule').controller(
 				$scope.reservedTables = [];
 				$scope.updated = null;
 
-				// $.get($scope.selectedHotel+".html",
-				$.get("/api/reservedseats/" + $scope.selectedHotel, function(
-						data, status) {
-					data = $.parseJSON(data);
-					$.each(data, function(key, val) {
-						$scope.reservedTables.push(val);
-						$scope.$apply(function() {
-
-						});
-
-					});
-				});
 
 			}
 
 			$scope.showSelected = function() {
 				if ($scope.selectedTables.length > 0) {
-					// $.post("http://appserver-jainulaslamcoda.1d35.starter-us-east-1.openshiftapps.com/customer/bookseat",
-					// {
-					$.post("/api/bookseat", {
+					$.post("/api/bookseatforhotel", {
 						seats : $scope.selectedTables,
-						hotel : $scope.selectedHotel,
 						user : 'hello'
 					}, function(data, status) {
 
@@ -116,18 +100,17 @@ angular.module('hotelManagerModule').controller(
 
 			$scope.init = function() {
 
-				// $.get("hotel.html",
-				$.get("/api/hotels", function(data, status) {
+				$.get("/api/reservedseatsforhotel", function(
+						data, status) {
 					data = $.parseJSON(data);
 					$.each(data, function(key, val) {
-						$scope.listOfHotels.push(val);
+						$scope.reservedTables.push(val);
 						$scope.$apply(function() {
 
 						});
 
 					});
 				});
-
 			};
 
 		});
@@ -136,8 +119,7 @@ angular.module('hotelManagerModule').controller('MyBookings', function($scope) {
 	$scope.itemsToAdd = [];
 	$scope.init = function() {
 
-		$.get("/api/mybookings", function(data, status) {
-			// $.get("mybookings.html", function(data, status) {
+		$.get("/api/allbookings", function(data, status) {
 			data = $.parseJSON(data);
 
 			$.each(data, function(key, val) {
