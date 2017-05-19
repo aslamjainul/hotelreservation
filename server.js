@@ -201,7 +201,7 @@ app.get('/api/mybookings', function (req, res) {
               
               if (reservedSeatsCount > 0) {
                 for (var i = 0; i < reservedSeatsCount;) {
-                  strJson += '{"user":"' + hotel[i].user + '","seat":"' + hotel[i].seat + '","hotel":"' + hotel[i].hotel + '",}';
+                  strJson += '{"user":"' + hotel[i].user + '","seat":"' + hotel[i].seat + '","hotel":"' + hotel[i].hotel + '"}';
                   i = i + 1;
                   if (i < reservedSeatsCount) {
                     strJson += ',';
