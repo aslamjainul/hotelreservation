@@ -97,9 +97,6 @@ angular.module('seatReservationApp').controller(
 							alert(data);
 							$.each(data, function(key, val) {
 								$scope.reservedTables.push(val);
-								$scope.$apply(function() {
-
-								});
 								// items.push( "<li id='" + key + "'>" + val +
 								// "</li>" );
 							});
