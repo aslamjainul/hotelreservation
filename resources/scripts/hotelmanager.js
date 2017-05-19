@@ -169,8 +169,8 @@ angular.module('hotelManagerModule').controller('login', function($scope) {
 
 	$scope.init = function() {
 		// alert('hallll');
-		$.get("hotelList.html", function(data, status) {
-			// $.get("/api/hotels", function(data, status) {
+		// $.get("hotelList.html", function(data, status) {
+		$.get("/api/hotels", function(data, status) {
 			data = $.parseJSON(data);
 			$.each(data, function(key, val) {
 				$scope.listOfHotels.push(val);
