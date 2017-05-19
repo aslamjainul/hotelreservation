@@ -160,32 +160,40 @@ angular.module('seatReservationApp').controller('MyBookings', function($scope) {
 
 });
 
-
-
 angular.module('seatReservationApp').controller('login', function($scope) {
 	$scope.successfulLogin = null;
 	$scope.failureLogin = null;
 	$scope.username = '';
 	$scope.password = '';
 	$scope.loginUser = function() {
-	
-		//alert($scope.username+" -- "+$scope.password)
-		$.post("/api/customerlogin",{username:$scope.username,password:$scope.password}, function(data, status) {
-		// $.get("loginresult.html", function(data, status) {
+		if($scope.username.length<4){
+			$("#username").focus();
+			return;
+		}
+		if($scope.password.length<4){
+			$("#password").focus();
+			return;
+		}
+		// alert($scope.username+" -- "+$scope.password)
+		$.post("/api/customerlogin", {
+			username : $scope.username,
+			password : $scope.password
+		}, function(data, status) {
+			// $.get("loginresult.html", function(data, status) {
 			data = $.parseJSON(data);
-			if(data.success){
+			if (data.success) {
 				$scope.successfulLogin = 'success';
 				$scope.failureLogin = null;
 				window.location.replace("/customer/dashboard");
-			}else{
+			} else {
 
 				$scope.failureLogin = 'failure';
-				$scope.successfulLogin = null;	
+				$scope.successfulLogin = null;
 			}
-$scope.$apply(function() {
+			$scope.$apply(function() {
 
-				});
-			
+			});
+
 		});
 	}
 

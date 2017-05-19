@@ -282,7 +282,7 @@ app.post('/api/customerlogin', function (req, res) {
    	   res.send('{ "failure" : "true"}');
      }
 });
-
+/*
 app.post('/customer/login', function (req, res) {
 	if (!db) {
 		initDb(function(err){});
@@ -312,11 +312,40 @@ app.post('/customer/login', function (req, res) {
         res.render('customer/login', { error : 1,success:null});
      }
 });
-
+*/
 app.get('/customer/registration', function (req, res) {
     res.render('customer/registration',{ error : null,success:null});
 });
 
+app.post('/api/customerregistration', function (req, res) {
+	if (!db) {
+		initDb(function(err){});
+	}
+	
+    if (db) {     
+        console.log('Going to Registering User with username....'+req.body.username);
+
+        db.collection('customers').findOne(
+                { username: req.body.username },
+                function (err, user) {
+                    if (err){
+                  	   res.send('{ "failure" : "true"}');
+                    }
+                    if (user) {
+                        console.log('Username ' + req.body.username + ' is already taken');
+                  	   res.send('{ "failure" : "true"}');
+                    } else {
+                        var col = db.collection('customers');
+                    	var hashedPassword = crypto.createHash('md5').update(req.body.password).digest('hex');
+                    	console.log(hashedPassword);	
+                        col.insert({fullname: req.body.fullname, username: req.body.username,password: hashedPassword});
+                  	   res.send('{ "success" : "true"}');
+                    }
+                });
+      } else {
+    	   res.send('{ "failure" : "true"}');
+     }
+});
 
 
 app.post('/customer/registration', function (req, res) {
